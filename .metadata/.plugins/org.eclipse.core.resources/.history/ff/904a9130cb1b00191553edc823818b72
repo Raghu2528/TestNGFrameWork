@@ -1,0 +1,16 @@
+package dao;
+
+public class PropertiesFileReader {
+	private static PropertiesFileReader fileReader;
+	public Properties getPropFile(String sPropFileName) throws IOException {
+		Properties prop;
+
+		if (propertiesMap.get(sPropFileName) == null) {
+			prop = new Properties();
+			prop.load(this.getClass().getClassLoader().getResourceAsStream(sPropFileName));
+			propertiesMap.put(sPropFileName, prop);
+		}
+		return propertiesMap.get(sPropFileName);
+	}
+
+}

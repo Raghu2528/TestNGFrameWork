@@ -1,0 +1,19 @@
+package Tests;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+
+public class SanityTestcase {
+	static WebDriver driver;
+	@BeforeMethod
+	public static void openBrowser() {
+		ApplicationLibrary.GenericMethods.openBrowser("www.google.com");
+	}
+
+	@AfterMethod
+	public static void quitBrowser() {
+		driver.quit();
+		
+	}
+}

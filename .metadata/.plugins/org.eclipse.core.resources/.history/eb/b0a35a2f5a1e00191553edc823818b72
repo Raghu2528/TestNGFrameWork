@@ -1,0 +1,54 @@
+package ApplicationLibrary;
+
+public class ResourcesMetaInfoDto {
+	String modelName;
+	String reportName;
+	String dashboardName;
+	String sqlreportName;
+	
+	public String getSqlreportName() {
+		return sqlreportName;
+	}
+
+	public void setSqlreportName(String sqlreportName) {
+		this.sqlreportName = sqlreportName;
+	}
+
+	String datasourceName;
+	String sqlDatasourceName;
+
+	public String getDatasourceName() {
+		return datasourceName;
+	}
+
+	public String setDatasourceName(String datasourceName) {
+		return this.datasourceName = datasourceName;
+	}
+
+	public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
+
+	public String getReportName() {
+		return reportName;
+	}
+
+	public void setReportName(String reportName) {
+		this.reportName = reportName;
+	}
+
+	public String getDashboardName() {
+		return dashboardName;
+	}
+
+	public void setDashboardName(String dashboardName) {
+		this.dashboardName = dashboardName;
+	}
+
+	
+
+}

@@ -1,0 +1,48 @@
+package dao;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Properties;
+
+
+public class PropertiesFileReader {
+	String result = "";
+	InputStream inputStream;
+ 
+	public String getPropValues(String key) throws IOException {
+ 
+		try {
+			Properties prop = new Properties();
+			String propFileName = "config.properties";
+ 
+			inputStream =  new filein;
+ 
+			if (inputStream != null) {
+				prop.load(inputStream);
+			} else {
+				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			}
+ 
+			// get the property value and print it out
+			String user = prop.getProperty(key);
+ System.out.println(user);
+			//result = "Company List = " + "QA" + "" ;
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} finally {
+			inputStream.close();
+		}
+		return result;
+	}
+	/*public String getpropertyvalue() {
+		String value = null;
+props= PropertiesFileReader.		
+	}*/
+	
+	/*public static void main (String args[]) throws IOException {
+		PropertiesFileReader ss = new PropertiesFileReader();
+		ss.getPropValues();
+	}*/
+}

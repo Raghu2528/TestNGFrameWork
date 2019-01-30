@@ -1,0 +1,22 @@
+package dao;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Properties;
+
+public class PropertiesFileReader {
+	public void getValues() throws FileNotFoundException{
+	Properties prop = new Properties();
+	
+	InputStream input = null;
+	
+	try {
+		input = new FileInputStream("config.properties");
+		prop.getProperty("QA")
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	}
+
+}

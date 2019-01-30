@@ -1,0 +1,9 @@
+package dao;
+package com.explorabi.properties;
+
+import java.util.Properties;
+
+public class PropertiesFileReader {
+	Properties prop = new Properties();
+	
+}

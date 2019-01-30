@@ -1,0 +1,23 @@
+package Tests;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class SanityTestcase {
+	static WebDriver driver;
+	@BeforeMethod
+	public static void openBrowser() {
+		ApplicationLibrary.GenericMethods.openBrowser("http://172.16.0.43:8080/home/#/login");
+	}
+@Test
+public static void enterText() {
+	
+}
+	@AfterMethod
+	public static void quitBrowser() {
+		driver.quit();
+		
+	}
+}

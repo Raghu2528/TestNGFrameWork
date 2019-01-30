@@ -1,0 +1,7 @@
+
+public class PropertyFileConstants {
+	
+	public static final String CONFIG_PROPERTIES = "Config.properties";
+
+
+}

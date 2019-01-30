@@ -1,0 +1,43 @@
+package dao;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Properties;
+
+
+public class PropertiesFileReader {
+	String result = "";
+	static InputStream inputStream;
+ 
+	public static String getPropValues(String key) throws IOException {
+ 
+		try {
+			Properties prop = new Properties();
+			String propFileName = "config.properties";
+ 
+			inputStream =  new FileInputStream(propFileName);
+			
+			prop.load(inputStream);
+			//String sss = prop.getProperty("QA");
+			
+			
+	}
+		catch(Exception e) {
+			
+		}
+	/*public String getpropertyvalue() {
+		String value = null;
+props= PropertiesFileReader.		
+	}*/
+		return key;
+	
+	/*public static void main (String args[]) throws IOException {
+		PropertiesFileReader ss = new PropertiesFileReader();
+		ss.getPropValues();
+	}*/
+		
+}
+}

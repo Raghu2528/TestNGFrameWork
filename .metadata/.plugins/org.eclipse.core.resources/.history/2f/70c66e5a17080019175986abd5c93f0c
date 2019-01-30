@@ -1,0 +1,19 @@
+package ApplicationLibrary;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class GenericMethods {
+static WebDriver driver;
+	
+	public static void openBrowser(String URL) {
+		try {
+		System.setProperty("webdriver.chrome.driver", "E:\\Raghu\\OwnFrameWorkTestNG\\com.explorabi\\src\\main\\java\\ApplicationLibrary\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.get(URL);
+		}
+		catch (Exception e) {
+		}
+	}
+	
+}

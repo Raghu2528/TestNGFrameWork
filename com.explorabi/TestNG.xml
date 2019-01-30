@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="ExploraBIRegressionSuite" parallel="tests">
+	
+	<test name="RegressionSuite">
+	<parameter name="browser" value="chrome"/>
+		<classes>
+			<class name="Tests.DataSourceCreationTestCases">
+			</class>
+		</classes>
+	</test>
+	<test name="RegressionSuite with firefox">
+	<parameter name="browser" value="firefox"/>
+		<classes>
+			<class name="Tests.DataSourceCreationTestCases">
+			</class>
+		</classes>
+	</test>
+	
+</suite>

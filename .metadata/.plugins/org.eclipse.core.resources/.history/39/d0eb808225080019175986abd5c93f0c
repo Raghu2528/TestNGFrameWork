@@ -1,0 +1,6 @@
+package ObjectProperties;
+
+public class CreateDatasouce {
+	public static String createDsPageTitle ="//section[@class='content-header']//h1";
+	
+}

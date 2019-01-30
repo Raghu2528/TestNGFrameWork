@@ -1,0 +1,21 @@
+package dao;
+
+import java.io.IOException;
+import java.util.Properties;
+
+public class PropertiesFileReader {
+	private static PropertiesFileReader fileReader;
+	public Object getPropFile() throws IOException {
+		String sPropFileName ="Config.properties";
+		Properties prop;
+			prop = new Properties();
+			prop.load(this.getClass().getClassLoader().getResourceAsStream(sPropFileName));
+		return prop.get(sPropFileName);
+	}
+
+	
+	public static void main (String args[]) {
+		PropertiesFileReader ss = new PropertiesFileReader();
+		ss.getPropFile();
+	}
+}

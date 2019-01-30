@@ -1,0 +1,13 @@
+package ObjectProperties;
+
+public class CreateDatasouce {
+	public static String createDsPageTitle ="//section[@class='content-header']//h1";
+	
+	//Datasource details xpaths
+	public static String dsName="";
+	public static String dsHost="";
+	public static String dsPort="";
+	public static String dsUsername="";
+	public static String dsPassword="";
+	
+}

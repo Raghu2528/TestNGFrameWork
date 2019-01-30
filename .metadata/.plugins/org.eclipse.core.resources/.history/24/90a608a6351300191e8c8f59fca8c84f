@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="ExploraBIRegressionSuite" parallel="yes">
+	<test name="RegressionSuite">
+		<classes>
+			<class name="Tests.DataSourceCreationTestCases">
+			</class>
+		</classes>
+	</test>
+</suite>

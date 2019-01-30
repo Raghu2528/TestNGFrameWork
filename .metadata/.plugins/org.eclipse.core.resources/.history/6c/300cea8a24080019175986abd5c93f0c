@@ -1,0 +1,112 @@
+package ApplicationLibrary;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class GenericMethods {
+	static WebDriver driver;
+
+	// Open Browser
+	public static void openBrowser(String URL) {
+		try {
+			System.setProperty("webdriver.chrome.driver",
+					"E:\\Raghu\\OwnFrameWorkTestNG\\com.explorabi\\src\\main\\java\\ApplicationLibrary\\chromedriver.exe");
+			driver = new ChromeDriver();
+			driver.get(URL);
+		} catch (Exception e) {
+		}
+	}
+
+	// Element Exists or not
+	public static WebElement verifyElementExist(By byVal) {
+		WebElement element = null;
+		try {
+			int size = driver.findElements(byVal).size();
+			// fluentWait(byVal, iSecs);
+			if (size != 0) {
+				if (size == 1) {
+					element = driver.findElement(byVal);
+				} else {
+					System.out.println("Duplicate Elements");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return element;
+	}
+
+	// Wait for an element
+	public static void waitForElement(By by) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			System.out.println("Wait For Element Failed");
+		}
+	}
+
+	public static void verifyText(String xpath, String expectedPageText) {
+		String actualPageText=driver.findElement(By.xpath(xpath)).getText();
+		if(actualPageText.equalsIgnoreCase(expectedPageText)) {
+			System.out.println("Text is verified");
+		}else
+			System.out.println("Test is not verified");
+	}
+	// Enter Text
+	public static void enterText(String xpath, String textToEnter) {
+		try {
+			verifyElementExist(By.xpath(xpath));
+			driver.findElement(By.xpath(xpath)).clear();
+			driver.findElement(By.xpath(xpath)).sendKeys(textToEnter);
+			;
+		} catch (Exception e) {
+			System.out.println("Element not found");
+		}
+	}
+
+	// Button Click
+	public static void buttonClick(String xpath) {
+		verifyElementExist(By.xpath(xpath));
+		driver.findElement(By.xpath(xpath)).click();
+	}
+
+	public static void createDs(String dataSourceType, String exceptedDsText) {
+		switch (dataSourceType) {
+		case "SQLServer":
+			driver.findElement(By.xpath("//a//span[contains(text(),'SQLServer')]")).click();
+			String actualSqlText =driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'SQLServer Connection')]")).getText();
+			break;
+		case "MySQL":
+			driver.findElement(By.xpath("//a//span[contains(text(),'MySQL')]")).click();
+			String actualMySqlTex= driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'MySQL Connection')]")).getText();
+			break;
+		case "ORACLE":
+			driver.findElement(By.xpath("//a//span[contains(text(),'ORACLE')]")).click();
+			String actualOracleText= driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'ORACLE Connection')]")).getText();
+			break;
+		case "EXCEL":
+			driver.findElement(By.xpath("//a//span[contains(text(),'Excel')]")).click();
+			String actualExcelText = driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'Excel Connection')]")).getText();
+			break;
+		case "CSV":
+			driver.findElement(By.xpath("//a//span[contains(text(),'CSV')]")).click();
+			String actualCsvText=	driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'CSV Connection')]")).getText();
+			break;
+		case "PostgresSQL":
+			driver.findElement(By.xpath("//a//span[contains(text(),'PostgreSQL')]")).click();
+			String actualPostgresText =driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'PostgreSQL Connection')]")).getText();
+			break;
+		default:
+			System.out.println("Elementnotfound");
+			break;
+		}
+		
+		if(actualPostgresText)
+	}
+}

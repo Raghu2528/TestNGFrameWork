@@ -1,0 +1,186 @@
+package ApplicationLibrary;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class GenericMethods {
+	static WebDriver driver;
+
+	// Open Browser
+	public static void openBrowser(String URL) {
+		try {
+			System.setProperty("webdriver.chrome.driver",
+					"E:\\Raghu\\OwnFrameWorkTestNG\\com.explorabi\\src\\main\\java\\ApplicationLibrary\\chromedriver.exe");
+			driver = new ChromeDriver();
+			driver.get(URL);
+			driver.manage().timeouts().pageLoadTimeout(1000, TimeUnit.SECONDS);
+			driver.manage().window().maximize();
+		} catch (Exception e) {
+		}
+	}
+
+	// Element Exists or not
+	public static WebElement verifyElementExist(By byVal) {
+		WebElement element = null;
+		try {
+			int size = driver.findElements(byVal).size();
+			// fluentWait(byVal, iSecs);
+			if (size != 0) {
+				if (size == 1) {
+					element = driver.findElement(byVal);
+				} else {
+					System.out.println("Duplicate Elements");
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return element;
+	}
+
+	// Wait for an element
+	public static void waitForElement(By by) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+			Thread.sleep(1000);
+		} catch (Exception e) {
+			System.out.println("Wait For Element Failed");
+		}
+	}
+
+	public static void verifyText(String xpath, String expectedPageText) {
+		String actualPageText=driver.findElement(By.xpath(xpath)).getText();
+		if(actualPageText.equalsIgnoreCase(expectedPageText)) {
+			System.out.println("Text is verified");
+		}else
+			System.out.println("Test is not verified");
+	}
+	// Enter Text
+	public static void enterText(String xpath, String textToEnter) {
+		try {
+			verifyElementExist(By.xpath(xpath));
+			driver.findElement(By.xpath(xpath)).clear();
+			driver.findElement(By.xpath(xpath)).sendKeys(textToEnter);
+			;
+		} catch (Exception e) {
+			System.out.println("Element not found");
+		}
+	}
+
+	// Button Click
+	public static void buttonClick(String xpath) {
+		verifyElementExist(By.xpath(xpath));
+		driver.findElement(By.xpath(xpath)).click();
+	}
+
+	public static void createDs(String dataSourceType) {
+		switch (dataSourceType) {
+		case "SQLServer":
+			driver.findElement(By.xpath("//a//span[contains(text(),'SQLServer')]")).click();
+			String actualSqlText =driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'SQLServer Connection')]")).getText();
+			if(actualSqlText.contains("SqlServer Connection")) {
+				System.out.println(actualSqlText+"text verified");
+			}else
+				System.out.println("Text Not Verified");
+			break;
+		case "MySQL":
+			driver.findElement(By.xpath("//a//span[contains(text(),'MySQL')]")).click();
+			String actualMySqlTex= driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'MySQL Connection')]")).getText();
+			if(actualMySqlTex.contains("MySQL Connection")) {
+				System.out.println(actualMySqlTex+"text verified");
+			}else
+				System.out.println("Text Not Verified");
+			break;
+		case "ORACLE":
+			driver.findElement(By.xpath("//a//span[contains(text(),'ORACLE')]")).click();
+			String actualOracleText= driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'ORACLE Connection')]")).getText();
+			if(actualOracleText.contains("ORACLE Connection")) {
+				System.out.println(actualOracleText+"text verified");
+			}else
+				System.out.println("Text Not Verified");
+			break;
+		case "EXCEL":
+			driver.findElement(By.xpath("//a//span[contains(text(),'Excel')]")).click();
+			String actualExcelText = driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'Excel Connection')]")).getText();
+			if(actualExcelText.contains("Excel Connection")) {
+				System.out.println(actualExcelText+"text verified");
+			}else
+				System.out.println("Text Not Verified");
+			break;
+		case "CSV":
+			driver.findElement(By.xpath("//a//span[contains(text(),'CSV')]")).click();
+			String actualCsvText=	driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'CSV Connection')]")).getText();
+			if(actualCsvText.contains("CSV Connection")) {
+				System.out.println(actualCsvText+"text verified");
+			}else
+				System.out.println("Text Not Verified");
+			break;
+		case "PostgresSQL":
+			driver.findElement(By.xpath("//a//span[contains(text(),'PostgreSQL')]")).click();
+			String actualPostgresText =driver.findElement(By.xpath("//div[@class='box box-default new-datasource']//span[contains(.,'PostgreSQL Connection')]")).getText();
+			if(actualPostgresText.contains("PostgreSQL Connection")) {
+				System.out.println(actualPostgresText+"text verified");
+			}else
+				System.out.println("Text Not Verified");
+			break;
+		default:
+			System.out.println("Elementnotfound");
+			break;
+		}
+		
+	}
+	//Passing all datasource details for sqlserver,mysql,oracle and postgres
+	public static void dataSourceDetails(String dsName,String dsHost,String dsPort,String dsUsername,String dsPassword) throws InterruptedException {
+		enterText(ObjectProperties.CreateDatasouce.dsName, dsName);
+		enterText(ObjectProperties.CreateDatasouce.dsHost, dsHost);
+		enterText(ObjectProperties.CreateDatasouce.dsPort, dsPort);
+		enterText(ObjectProperties.CreateDatasouce.dsUsername, dsUsername);
+		enterText(ObjectProperties.CreateDatasouce.dsPassword, dsPassword);
+		buttonClick(ObjectProperties.CreateDatasouce.dsSaveBtn);	
+		Thread.sleep(5000);
+		
+	}
+	//Datasource save popups
+	public static void datasourceSavePopups() {
+		driver.switchTo().activeElement();
+		waitForElement(By.xpath(ObjectProperties.CreateDatasouce.popup));
+		String expectedPopupText = driver.findElement(By.xpath(ObjectProperties.CreateDatasouce.popup));
+		String actualPopupText = miscValue.getProperty("sDSPopupText");
+		String actualPopupText1 = miscValue.getProperty("sDSPopupInvalidText");
+		if(actualPopupText.equals(expectedPopupText)) {
+			verifyText(byLocator("sPopup", PropertyFileConstants.OR_PROPERTIES),
+					miscValue.getProperty("sDSPopupText"),
+					"Verify first dataSource popup text", waitTime, Screenshot.TRUE);
+			clickElement(
+					byLocator("sPopupOkBtn", PropertyFileConstants.OR_PROPERTIES),
+					waitTime, "clicked on first popup ok button");
+			delay(MiscConstants.M_DELAY);
+			mgDialogPopup();
+			waitForElement(byLocator("sPopup", PropertyFileConstants.OR_PROPERTIES));
+			verifyText(byLocator("sPopup", PropertyFileConstants.OR_PROPERTIES),
+					miscValue.getProperty("sDSPopupText1"),
+					"Verify second dataSource popup text", waitTime, Screenshot.TRUE);
+			waitForElement(byLocator("sPopupOkBtn1", PropertyFileConstants.OR_PROPERTIES));
+			clickElement(
+					byLocator("sPopupOkBtn1", PropertyFileConstants.OR_PROPERTIES),
+					waitTime, "click on second popup ok button");
+		}else if(actualPopupText1.equals(expectedPopupText)) {
+			verifyText(byLocator("sPopup", PropertyFileConstants.OR_PROPERTIES),
+					miscValue.getProperty("sDSPopupInvalidText"),
+					"Verify first dataSource popup text", waitTime, Screenshot.TRUE);
+			clickElement(
+					byLocator("sPopupCancelBtn", PropertyFileConstants.OR_PROPERTIES),
+					waitTime, "clicked on cancel button");
+		}
+		
+		
+	}
+	
+}

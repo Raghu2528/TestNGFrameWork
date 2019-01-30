@@ -1,0 +1,36 @@
+package Tests;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import ApplicationLibrary.GenericMethods;
+
+public class DataSourceCreationTestCases {
+	static WebDriver driver;
+	@BeforeMethod
+	public void openBrowserAndLogin() {
+		GenericMethods.openBrowser("http://172.16.0.43:8080/home/#/login");
+		Thread.sleep(1500);
+		GenericMethods.enterText(ObjectProperties.LoginPageElements.username, "raghu");
+		GenericMethods.enterText(ObjectProperties.LoginPageElements.password, "raghu@123");
+		GenericMethods.buttonClick(ObjectProperties.LoginPageElements.loginBtn);
+	}
+@Test(priority=1)
+public static void createSqlServerDatasource() {
+	GenericMethods.buttonClick(ObjectProperties.HomePageElements.connectLink);
+	GenericMethods.buttonClick(ObjectProperties.HomePageElements.createDsLink);
+	GenericMethods.verifyText(ObjectProperties.CreateDatasouce.createDsPageTitle, "Create Data Connection");
+	GenericMethods.createDs("SQLServer");
+	GenericMethods.dataSourceDetails("sqlserver_0000", "ggk-wrl-exp-002.ggktech.local", "1433", "saa", "Welcome@456");
+	
+}
+
+
+	@AfterMethod
+	public static void quitBrowser() {
+		driver.quit();
+		
+	}
+}
