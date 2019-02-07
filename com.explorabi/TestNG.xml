@@ -8,12 +8,5 @@
 			</class>
 		</classes>
 	</test>
-	<test name="RegressionSuite with firefox">
-	<parameter name="browser" value="firefox"/>
-		<classes>
-			<class name="Tests.DataSourceCreationTestCases">
-			</class>
-		</classes>
-	</test>
 	
 </suite>

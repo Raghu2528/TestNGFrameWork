@@ -16,38 +16,23 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class GenericMethods {
-	static WebDriver driver;
-	
-	public String getPropertyValues() throws IOException {
-		String value ="";
-		Properties prop = new Properties();
-		String propertyfilename ="Config.properties";
-		prop.load(getClass().getClassLoader().getResourceAsStream(propertyfilename));
-	//	InputStream inputstream = getClass().getClassLoader().getResourceAsStream(propertyfilename);
-		/*if(inputstream !=null) {
-			prop.load(inputstream);
-		}else
-			{
-			throw new FileNotFoundException("property file '" + propertyfilename + "' not found in the classpath");
-		}*/
-		value = prop.getProperty("QA");
-		System.out.println(value);
-		return value;
-		
-	}
+import dao.PropertiesFileReader;
 
-	public static void main(String args[]) throws IOException {
-		GenericMethods gs = new GenericMethods();
-		gs.getPropertyValues();
+public class GenericMethods extends PropertiesFileReader {
+	 static WebDriver driver;
+	static PropertiesFileReader propertyFileReader;
+	public GenericMethods() {
+		propertyFileReader= new PropertiesFileReader();
+
 	}
+	
 	// Open Browser
 	public static void openBrowser(String URL,String key) {
 		try {
 			switch (key) {
 			case "chrome":
 				System.setProperty("webdriver.chrome.driver",
-						"E:\\Raghu\\OwnFrameWorkTestNG\\com.explorabi\\src\\main\\resources\\TestData\\chromedriver.exe");
+					"E:\\Raghu\\OwnFrameWorkTestNG\\com.explorabi\\src\\main\\resources\\TestData\\chromedriver.exe");
 				driver = new ChromeDriver();
 				break;
 			case "firefox":
@@ -176,12 +161,14 @@ public class GenericMethods {
 	//Passing all datasource details for sqlserver,mysql,oracle and postgres
 	public static void dataSourceDetails(String dsName,String dsHost,String dsPort,String dsUsername,String dsPassword) throws InterruptedException {
 		enterText(ObjectProperties.CreateDatasouce.dsName, dsName+ getCurrentTimeInstance());
+		String text =driver.findElement(By.xpath(ObjectProperties.CreateDatasouce.dsName)).getAttribute("value");
+		System.out.println(text);
 		enterText(ObjectProperties.CreateDatasouce.dsHost, dsHost);
 		enterText(ObjectProperties.CreateDatasouce.dsPort, dsPort);
 		enterText(ObjectProperties.CreateDatasouce.dsUsername, dsUsername);
 		enterText(ObjectProperties.CreateDatasouce.dsPassword, dsPassword);
 		buttonClick(ObjectProperties.CreateDatasouce.dsSaveBtn);	
-		Thread.sleep(5000);
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
 		
 	}
 	//Datasource save popups
