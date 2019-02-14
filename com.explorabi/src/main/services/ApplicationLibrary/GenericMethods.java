@@ -1,13 +1,27 @@
 package ApplicationLibrary;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -177,25 +191,111 @@ public class GenericMethods extends PropertiesFileReader {
 		waitForElement(By.xpath(ObjectProperties.CreateDatasouce.popup));
 		String actualPopupText = driver.findElement(By.xpath(ObjectProperties.CreateDatasouce.popup)).getText();
 		String expectedPopupText = "Do you want to save the DataSource Connection?";
+		String exceptedPopupText1 ="Connection failed. Do you still want to save the DataSource Connection?";
 		if(actualPopupText.contains(expectedPopupText)) {
 			buttonClick(ObjectProperties.CreateDatasouce.popupOkBtn);
-		}else {
-			System.out.println("Element not found in popup");
+			driver.switchTo().activeElement();
+			waitForElement(By.xpath(ObjectProperties.CreateDatasouce.popup));
+			String actualPopuText1= driver.findElement(By.xpath(ObjectProperties.CreateDatasouce.popup)).getText();		
+			String expectedPopupText1 ="DataSource Connection saved successfully.";
+			if(actualPopuText1.contains(expectedPopupText1)) {
+				buttonClick(ObjectProperties.CreateDatasouce.popupOkBtn1);
+				System.out.println(actualPopuText1);
+			}else {
+				System.out.println("Element not found in poup1");
+			}
+		}else if(actualPopupText.contains(exceptedPopupText1))  {
+			String actualPopuText2= driver.findElement(By.xpath(ObjectProperties.CreateDatasouce.popup)).getText();	
+			System.out.println(actualPopuText2);
 		}
-		driver.switchTo().activeElement();
-		waitForElement(By.xpath(ObjectProperties.CreateDatasouce.popup));
-		String actualPopuText1= driver.findElement(By.xpath(ObjectProperties.CreateDatasouce.popup)).getText();		
-		String expectedPopupText1 ="DataSource Connection saved successfully.";
-		if(actualPopuText1.contains(expectedPopupText1)) {
-			buttonClick(ObjectProperties.CreateDatasouce.popupOkBtn1);
-		}else {
-			System.out.println("Element not found in poup1");
-		}
-		
 	}
 	
 	public static String getCurrentTimeInstance(){
 		return new SimpleDateFormat("MMddyyyy_HHmmss").format(Calendar.getInstance().getTime());
+	}
+	
+	public void getExcelValues() throws IOException, InvalidFormatException {
+		List<String> excelValues =new ArrayList<String>();
+		String fileName = "C:\\Users\\raghunath.borra\\Desktop\\TextData123.xls";
+		File file = new File(fileName);
+		//XSSFWorkbook wb = new XSSFWorkbook(file);
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sh = wb.getSheet("sheet");
+		int rows = sh.getLastRowNum()-sh.getFirstRowNum();
+		for(int i=0;i<rows+1;i++) {
+			Row row = sh.getRow(i);
+			
+			for(int j=0;j<row.getLastCellNum();j++) {
+				String data = row.getCell(j).getStringCellValue();
+				excelValues.add(data);
+				System.out.println(data);
+			}
+		}
+				
+	}
+	public List<String> getValuesFromApp() throws InterruptedException {
+		GenericMethods.openBrowser(propertyFileReader.getApplicationUrl(),"chrome");
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		GenericMethods.enterText(ObjectProperties.LoginPageElements.username, propertyFileReader.getUserName());
+		GenericMethods.enterText(ObjectProperties.LoginPageElements.password, propertyFileReader.getPassword());
+		GenericMethods.buttonClick(ObjectProperties.LoginPageElements.loginBtn);
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		List<String> values = new ArrayList<String>();
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		GenericMethods.buttonClick(ObjectProperties.HomePageElements.connectLink);
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		GenericMethods.buttonClick(ObjectProperties.HomePageElements.viewDsLink);
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		GenericMethods.buttonClick(ObjectProperties.HomePageElements.navigateToGrid);
+		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		List<WebElement> xpaths = driver.findElements(By.xpath("//table[@st-table='displayedCollection']//tbody//tr"));
+		int count = xpaths.size();
+		for(int i=1;i<count+1;i++) {
+			String text = driver.findElement(By.xpath("//table[@st-table='displayedCollection']//tbody//tr["+i+"]//td[2]")).getText().trim();
+			values.add(text);
+		}
+			System.out.println(values);
+		return values;
+	}
+	
+	public List<String> getValuesFromDB() throws SQLException, ClassNotFoundException {
+		String jdbcpath = "jdbc:postgresql://10.118.60.185:5432/explorabi_mgmt_test_v1_8?";
+		String username= "postgres";
+		String password ="postgres";
+		String query = "select name from datasource where createdbyid =117";
+		List<String> valuesFromDb = new ArrayList<String>();
+		Class.forName("org.postgresql.Driver");
+		Connection con = null;
+		con = DriverManager.getConnection(jdbcpath, username, password);
+		Statement stmt = con.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		
+		while(rs.next()) {
+			String text = rs.getString("name");
+			valuesFromDb.add(text);
+		}
+		con.close();
+		System.out.println(valuesFromDb);
+		return valuesFromDb;
+	}
+	
+	public void compareData() throws ClassNotFoundException, SQLException, InterruptedException {
+		List<String> values1= getValuesFromDB();
+		List<String> values2= getValuesFromApp();
+		for(String values66:values1) {
+			for(String values77:values2) {
+		if(values66.contains(values77)) {
+			System.out.println("test");
+		}
+		}
+		}
+ 	}
+	public static void main(String args[]) throws IOException, InvalidFormatException, InterruptedException, SQLException, ClassNotFoundException {
+		GenericMethods gen = new GenericMethods();
+	/*	gen.getValuesFromDB();
+		gen.getValuesFromApp();*/
+		gen.compareData();
+		
 	}
 	
 }
