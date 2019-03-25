@@ -41,7 +41,7 @@ public class PropertiesFileReader {
 		 }
 		 
 		 public String getApplicationUrl() {
-		 String url = properties.getProperty("url");
+		 String url = properties.getProperty("url_qa");
 		 if(url != null) return url;
 		 else throw new RuntimeException("url not specified in the Configuration.properties file.");
 		 }
@@ -56,4 +56,5 @@ public class PropertiesFileReader {
 					 if(password!=null) return password;
 					 else throw new RuntimeException("userName not specified in the Configuration.properties file."); 
 		 }
+
 }

@@ -168,7 +168,7 @@ public class GenericMethods extends PropertiesFileReader {
 		enterText(ObjectProperties.CreateDatasouce.dsUsername, dsUsername);
 		enterText(ObjectProperties.CreateDatasouce.dsPassword, dsPassword);
 		buttonClick(ObjectProperties.CreateDatasouce.dsSaveBtn);	
-		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		Thread.sleep(3000);
 		
 	}
 	//Datasource save popups

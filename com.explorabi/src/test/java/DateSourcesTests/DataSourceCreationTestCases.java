@@ -27,11 +27,11 @@ public class DataSourceCreationTestCases extends GenericMethods{
 	@BeforeTest
 	public void openBrowserAndLogin(String browser) throws InterruptedException, IOException {
 		GenericMethods.openBrowser(propertyFileReader.getApplicationUrl(),browser);
-		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		Thread.sleep(3000);
 		GenericMethods.enterText(ObjectProperties.LoginPageElements.username, propertyFileReader.getUserName());
 		GenericMethods.enterText(ObjectProperties.LoginPageElements.password, propertyFileReader.getPassword());
 		GenericMethods.buttonClick(ObjectProperties.LoginPageElements.loginBtn);
-		Thread.sleep(propertyFileReader.getImplicitlyWait());
+		Thread.sleep(3000);
 	}
 
 @Test(priority=0,enabled=true)
@@ -43,7 +43,7 @@ public  void createSqlServerDatasource() throws InterruptedException {
 	Thread.sleep(propertyFileReader.getImplicitlyWait());
 	GenericMethods.verifyText(ObjectProperties.CreateDatasouce.createDsPageTitle, "Create Data Connection");
 	GenericMethods.createDs("SQLServer");
-	GenericMethods.dataSourceDetails("sqlserver_0000", "ggk-wrl-exp-002.ggktech.local", "1433", "saa", "Welcome@456");
+	GenericMethods.dataSourceDetails("sqlserver_0000"+getCurrentTimeInstance(), "172.16.7.80", "1433", "sa", "Welcome@1234");
 	
 	GenericMethods.datasourceSavePopups();
 }
@@ -57,8 +57,7 @@ public  void createSqlServerDatasource1() throws InterruptedException {
 	Thread.sleep(propertyFileReader.getImplicitlyWait());
 	GenericMethods.verifyText(ObjectProperties.CreateDatasouce.createDsPageTitle, "Create Data Connection");
 	GenericMethods.createDs("SQLServer");
-	GenericMethods.dataSourceDetails("sqlserver_0000", "ggk-wrl-exp-002.ggktech.local11111111", "0000", "saa", "Welcome@456");
-	
+	GenericMethods.dataSourceDetails("sqlserver_0000", "172.16.7.80", "1433", "saa", "Welcome@1234");
 	GenericMethods.datasourceSavePopups();
 }
 

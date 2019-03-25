@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite guice-stage="DEVELOPMENT" name="Failed suite [ExploraBIRegressionSuite]" parallel="tests">
-  <test thread-count="5" name="RegressionSuite with firefox(failed)" parallel="tests">
-    <parameter name="browser" value="firefox"/>
+<suite guice-stage="DEVELOPMENT" name="Failed suite [ExploraBIRegressionSuite]">
+  <test thread-count="5" name="RegressionSuite(failed)">
+    <parameter name="browser" value="chrome"/>
     <classes>
-      <class name="Tests.DataSourceCreationTestCases">
+      <class name="DateSourcesTests.DataSourceCreationTestCases">
         <methods>
           <include name="openBrowserAndLogin"/>
+          <include name="createSqlServerDatasource1"/>
           <include name="createSqlServerDatasource"/>
+          <include name="quitBrowser"/>
         </methods>
-      </class> <!-- Tests.DataSourceCreationTestCases -->
+      </class> <!-- DateSourcesTests.DataSourceCreationTestCases -->
     </classes>
-  </test> <!-- RegressionSuite with firefox(failed) -->
+  </test> <!-- RegressionSuite(failed) -->
 </suite> <!-- Failed suite [ExploraBIRegressionSuite] -->
